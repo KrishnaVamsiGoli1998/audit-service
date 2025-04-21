@@ -1,4 +1,6 @@
 // audit-server/index.js
+require('dotenv').config();
+
 const express = require('express');
 const { Pool } = require('pg');
 const cors = require('cors');
@@ -8,7 +10,13 @@ const port = 4004;
 app.use(cors());
 app.use(express.json());
 
-const pool = new Pool({ user: 'postgres', password: 'Lovealll@7', host: 'localhost', port: 5432, database: 'taskdb' });
+const pool = new Pool({
+ user: process.env.DB_USER,
+ password: process.env.DB_PASSWORD,
+ host: process.env.DB_HOST,
+ port: process.env.DB_PORT,
+ database: 'taskdb'
+});
 
 app.post('/logs', async (req, res) => {
  const { action_type, description } = req.body;
